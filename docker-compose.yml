@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:11.13-alpine
+    environment:
+      POSTGRES_DB: sampledb
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: foobar
+      PGDATA: /var/lib/postgres
+    ports:
+      - 5433:5432
+    volumes:
+      - redirectDb:/var/lib/postgres
+
+volumes:
+  redirectDb:
