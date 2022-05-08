@@ -1,10 +1,12 @@
-import {Module} from "@nestjs/common";
-import {ConfigModule} from "@nestjs/config";
-import {globalConfiguration} from "./config";
-import {RedirectController} from "./redirect.controller";
-import {PrismaService} from "./prisma.service";
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { globalConfiguration } from './config';
+import { RedirectController } from './redirect.controller';
+import { PrismaService } from './prisma.service';
 
-const isDev = !['production', 'test'].includes(process.env.NODE_ENV || 'development');
+const isDev = !['production', 'test'].includes(
+  process.env.NODE_ENV || 'development',
+);
 
 @Module({
   imports: [
@@ -15,11 +17,7 @@ const isDev = !['production', 'test'].includes(process.env.NODE_ENV || 'developm
       load: [globalConfiguration],
     }),
   ],
-  controllers: [
-    RedirectController
-  ],
-  providers: [
-    PrismaService
-  ]
+  controllers: [RedirectController],
+  providers: [PrismaService],
 })
 export class AppModule {}
