@@ -1,0 +1,14 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# CodeStream ignored files
+/codestream.xml
+dataSources*
+git_toolbox_prj.xml
+modules.xml
+profiles_settings.xml
+redirect.iml
+sqldialects.xml
+vcs.xml
