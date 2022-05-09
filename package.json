@@ -5,7 +5,9 @@
   "author": "uptown <uptownhr@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "build": "nest build",
     "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
     "generate": "prisma generate --schema=./src/prisma/schema.prisma",
     "migrate": "prisma migrate dev --schema=./src/prisma/schema.prisma",
     "migrate:reset": "prisma migrate reset --schema=./src/prisma/schema.prisma"
