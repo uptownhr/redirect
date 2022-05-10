@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpException,
@@ -8,18 +9,18 @@ import {
   Res,
 } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
-import { RedirectModel } from './redirect.model';
+import { CreateRedirectInput, RedirectModel } from './redirect.model';
 import { Request, Response } from 'express';
 
 @Controller('/')
 export class RedirectController {
   constructor(private readonly prisma: PrismaService) {}
   @Post('/redirect')
-  async create(): Promise<RedirectModel> {
+  async create(@Body() input: CreateRedirectInput): Promise<RedirectModel> {
     const redirect = await this.prisma.redirect.create({
       data: {
-        urlPath: '/test',
-        targetUrl: 'https://google.com',
+        urlPath: input.urlPath,
+        targetUrl: input.targetUrl,
         ip: '0.0.0.0',
       },
     });
@@ -30,15 +31,23 @@ export class RedirectController {
   }
 
   @Get('*')
-  async get(@Req() request: Request, @Res() res: Response): Promise<void> {
-    const redirect = await this.prisma.redirect.findFirst({
+  async get(
+    @Req() request: Request,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<RedirectModel[] | void> {
+    const redirects = await this.prisma.redirect.findMany({
       where: {
         urlPath: request.url,
       },
     });
 
-    if (!redirect) throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    if (redirects.length === 0)
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
 
-    return res.redirect(redirect.targetUrl);
+    if (redirects.length === 1) return res.redirect(redirects[0].targetUrl);
+
+    return redirects.map((r) => ({
+      id: r.id,
+    }));
   }
 }
