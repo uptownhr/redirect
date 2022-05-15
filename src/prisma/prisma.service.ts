@@ -1,9 +1,9 @@
 /* istanbul ignore file */
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
-import { PrismaClient } from './prisma/generated/prisma.client';
+import { PrismaClient } from './generated/prisma.client';
 import { ConfigService } from '@nestjs/config';
 
-export * from './prisma/generated/prisma.client';
+export * from './generated/prisma.client';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleDestroy {

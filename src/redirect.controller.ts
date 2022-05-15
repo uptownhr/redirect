@@ -2,15 +2,12 @@ import {
   Body,
   Controller,
   Get,
-  HttpException,
-  HttpStatus,
   Post,
   Req,
-  Res,
 } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from './prisma/prisma.service';
 import { CreateRedirectInput, RedirectModel } from './redirect.model';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 
 @Controller('/')
 export class RedirectController {
@@ -27,13 +24,13 @@ export class RedirectController {
 
     return {
       id: redirect.id,
+      targetUrl: redirect.targetUrl
     };
   }
 
   @Get('*')
   async get(
     @Req() request: Request,
-    @Res({ passthrough: true }) res: Response,
   ): Promise<RedirectModel[] | void> {
     const redirects = await this.prisma.redirect.findMany({
       where: {
@@ -41,13 +38,9 @@ export class RedirectController {
       },
     });
 
-    if (redirects.length === 0)
-      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
-
-    if (redirects.length === 1) return res.redirect(redirects[0].targetUrl);
-
     return redirects.map((r) => ({
       id: r.id,
+      targetUrl: r.targetUrl
     }));
   }
 }
