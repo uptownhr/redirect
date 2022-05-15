@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./generated/prisma.client"
+  output   = "./generated/prisma.client"
 }
 
 // datasource db {
@@ -12,24 +12,24 @@ generator client {
 // }
 
 datasource db {
-  provider = "postgres"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model Redirect {
-  id        String   @id @default(uuid()) @db.Uuid
-  user      User?     @relation(fields: [userId], references: [id])
-  userId    String? @db.Uuid
-  urlPath       String
+  id        Int      @id @default(autoincrement())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+  urlPath   String
   targetUrl String
   ip        String
   // geo       Object?
-  hidden    Boolean @default(false)
+  hidden    Boolean  @default(false)
   createdAt DateTime @default(now()) @map("created_at")
 }
 
 model User {
-  id        String     @id @default(uuid()) @db.Uuid
+  id        Int        @id @default(autoincrement())
   email     String     @unique
   name      String?
   redirects Redirect[]

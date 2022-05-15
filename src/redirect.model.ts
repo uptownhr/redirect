@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class RedirectModel {
-  id: string;
+  id: number;
   targetUrl: string;
 }
 
